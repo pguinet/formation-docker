@@ -1,0 +1,45 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Atelier2026!
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - database
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    # Pas de 'ports:' -> la base n'est PAS exposee a l'hote.
+    # Elle reste joignable par PGAdmin via le reseau 'database'.
+
+  pgadmin:
+    image: dpage/pgadmin4:8.14
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: Atelier2026!
+      # Force l'ecoute en IPv4. Sans ca, gunicorn tente de binder [::]:80
+      # et crashe sur un hote ou IPv6 est desactive (Can't connect to ('::', 80)).
+      PGADMIN_LISTEN_ADDRESS: "0.0.0.0"
+    ports:
+      - "80:80"
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    networks:
+      - database
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+networks:
+  database:
+
+volumes:
+  pgdata:
+    name: pg_data
+  pgadmin:
+    name: pgadmin

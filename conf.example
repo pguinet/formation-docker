@@ -1,0 +1,34 @@
+# Configuration Azure de l'atelier.
+# Copier ce fichier vers `conf` puis renseigner vos valeurs :
+#   cp conf.example conf
+# `conf` est gitignoré : il contient des informations sensibles (mot de passe,
+# identifiants d'abonnement) et ne doit jamais etre committe.
+
+export subscription=<votre-subscription-id>
+export resourceGroupName=<votre-resource-group>
+export location=francecentral
+export vmSize=Standard_D2s_v3
+export gallery=<votre-compute-gallery>
+export image=<votre-image>
+export security=TrustedLaunch
+export vmAdminUser=<admin-user>
+export vmAdminPassword=<admin-password>
+
+# --- Réseau ---
+export vnetName=<vnet>                 # ex: atelier-vnet
+export vnetAddressPrefix=10.0.0.0/16
+export subnetName=<subnet>             # ex: atelier-subnet
+export subnetPrefix=10.0.0.0/24
+export nsgName=<nsg>                    # ex: atelier-nsg
+export inboundSource='*'               # source autorisée en entrée (par défaut : partout)
+export inboundPorts='22 80 8080'       # ports TCP entrants autorisés
+
+# --- Gallery / définition d'image ---
+export imagePublisher=primasolutions
+export imageOffer=atelier-docker
+export imageSku=debian-13-docker
+export imageVersion=1.0.0              # version publiée par build_image.sh
+
+# --- Source du build golden ---
+# urn Debian 13 (Trixie) Gen2 — à confirmer via `az vm image list --publisher Debian --all`
+export sourceImage=Debian:debian-13:13-gen2:latest

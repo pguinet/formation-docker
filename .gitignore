@@ -1,0 +1,9 @@
+.idea
+packages/
+kitty_portable.exe
+ateliers-docker.zip
+
+# Configuration locale sensible (copier depuis conf.example)
+conf
+# Artefact de session : liste des FQDN, régénérée par generate_packages.sh
+VMs.txt
